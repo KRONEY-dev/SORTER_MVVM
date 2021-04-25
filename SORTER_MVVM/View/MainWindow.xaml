@@ -1,0 +1,581 @@
+﻿<Window x:Class="SORTER_MVVM.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:SORTER_MVVM.ViewModels"
+        xmlns:local="clr-namespace:SORTER_MVVM"
+        Title="Top Sorter" 
+        Height="450" Width="800"
+        ResizeMode="NoResize" 
+        WindowStyle="None"
+        BorderThickness="3"
+        Visibility="{Binding Main_Window_Visibility, Mode=TwoWay}"
+        x:Name="MainWind">
+
+    <Window.DataContext>
+        <vm:MainWindow_ViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <Style x:Key="Polygone_Style" TargetType="Polygon">
+            <Setter Property="StrokeThickness" Value="1"/>
+            <Setter Property="Stroke" Value="Black"/>
+            <Setter Property="Fill" Value="#FF0B0F5F"/>
+        </Style>
+
+        <Style x:Key="Button_Style" TargetType="Button">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="Red"/>
+                </Trigger>
+            </Style.Triggers>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="FontFamily" Value="Arial Black"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                BorderThickness="1" BorderBrush="Black"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center" 
+                                              Margin="3,0"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="Aqua"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Window.BorderBrush>
+        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+            <GradientStop Color="Black" Offset="0.305"/>
+            <GradientStop Color="White"/>
+            <GradientStop Color="#FFA4A4A4" Offset="0.165"/>
+        </LinearGradientBrush>
+    </Window.BorderBrush>
+
+    <Window.Background>
+        <ImageBrush ImageSource="/SORTER_MVVM;component/Resources/Sky_Star_Background.jpg"/>
+    </Window.Background>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="77"/>
+            <RowDefinition Height="312"/>
+            <RowDefinition Height="61"/>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="TopBar" Grid.Row="0" Background="Transparent">
+            <Grid.InputBindings>
+                <MouseBinding Command="{Binding Drag_App_Command}"
+                              MouseAction="LeftClick"/>
+            </Grid.InputBindings>
+
+            <Button x:Name="SHADOW" 
+                    Command="{Binding SHADOW_click_Command}"
+                    Content="SHADOW MODE" 
+                    FontSize ="13">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <TextBlock Text="Hide the application in system tray"/>
+                    </ToolTip>
+                </Button.ToolTip>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="OverridesDefaultStyle" Value="True"/>
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="VerticalAlignment" Value="Top"/>
+                        <Setter Property="Margin" Value="30,0"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="FontFamily" Value="Viner Hand ITC"/>
+                        <Setter Property="FontSize" Value="13"/>
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="Red" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="border" BorderThickness="1" BorderBrush="Black"
+                                            Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" 
+                                                          VerticalAlignment="Center" 
+                                                          Margin="5" Width="105"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Polygon Points="243,0 293,55 510,55 560,0">
+                <Polygon.Fill>
+                    <SolidColorBrush Color="AliceBlue"/>
+                </Polygon.Fill>
+            </Polygon>
+
+            <Border>
+                <TextBlock Text="SORTER" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="40"/>
+                            <Setter Property="FontFamily" Value="Arial Black"/>
+                            <Setter Property="Margin" Value="0,5"/>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Border>
+
+            <StackPanel Orientation="Horizontal" 
+                        VerticalAlignment="Top" HorizontalAlignment="Right">
+                <StackPanel.Background>
+                    <SolidColorBrush Color="AliceBlue" Opacity="0.3"/>
+                </StackPanel.Background>
+                
+                <Button x:Name="Min_Button" Command="{Binding Collapse_App_Command}" Foreground="Transparent">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <TextBlock Text="Collapse"/>
+                        </ToolTip>
+                    </Button.ToolTip>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="OverridesDefaultStyle" Value="True"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="border" BorderThickness="0" Background="{TemplateBinding Background}">
+                                            <Image Name="Min_Button" 
+                                                   Height="15" Width="15" 
+                                                   Margin="5" 
+                                                   VerticalAlignment="Bottom">
+                                                <Image.Style>
+                                                    <Style TargetType="{x:Type Image}">
+                                                        <Setter Property="Source" Value="/SORTER_MVVM;component/Resources/Minimise_Disable.png"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=border}" Value="True">
+                                                                <Setter Property="Source" Value="/SORTER_MVVM;component/Resources/Minimise_Active.png"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="Black"/>
+                                                <Setter Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button x:Name="Close_Button" Foreground="Transparent" Command="{Binding Close_App_Command}">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <TextBlock Text="Close"/>
+                        </ToolTip>
+                    </Button.ToolTip>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="OverridesDefaultStyle" Value="True"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="border" BorderThickness="0" Background="{TemplateBinding Background}">
+                                            <Image Name="Min_Button" 
+                                                   Height="15" Width="15" 
+                                                   Margin="5" 
+                                                   VerticalAlignment="Bottom">
+                                                <Image.Style>
+                                                    <Style TargetType="{x:Type Image}">
+                                                        <Setter Property="Source" Value="/SORTER_MVVM;component/Resources/Close_Disable.png"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=border}" Value="True">
+                                                                <Setter Property="Source" Value="/SORTER_MVVM;component/Resources/Close_Active.png"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="Black"/>
+                                                <Setter Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid x:Name="MiddleBar" Grid.Row="1">
+
+            <Polygon Points="0,70 20,85 20,227 0,242" Style="{StaticResource Polygone_Style}"/>
+
+            <Polygon Points="800,70 780,85 780,227 800,242"
+                     HorizontalAlignment="Left" Margin="-6,0,0,0"
+                     Style="{StaticResource Polygone_Style}"/>
+
+            <Button x:Name="Browser_1_OutPut" 
+                    Command="{Binding Browse_click_Command}"
+                    HorizontalAlignment="Left" VerticalAlignment="Top" 
+                    Height="23" 
+                    Margin="151,79,0,0" 
+                    Content="Browse" 
+                    FontSize="10" 
+                    Style="{StaticResource Button_Style}"
+                    IsEnabled="{Binding Browse_OutPut_IsEnabled}">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <TextBlock Text="Selecting a directory from which the sortation will be produced"/>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
+
+            <Button x:Name="Browser_1_InPut"
+                    HorizontalAlignment="Left" VerticalAlignment="Top" 
+                    Height="23" Margin="151,244,0,0" 
+                    Content="Browse" FontSize="10"
+                    Style="{StaticResource Button_Style}"
+                    Command="{Binding InPut_Browse_click_Command}">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <TextBlock Text="Selecting a directory where files will be moved"/>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
+
+            <Border BorderThickness="6" Background="#FF3A05AC" BorderBrush="Black">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Margin" Value="200,50,200,20"/>
+                    </Style>
+                </Border.Style>
+
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical">
+                        <Image Source="/SORTER_MVVM;component/Resources/Triangle.png" Width="20" VerticalAlignment="Top" Margin="0,23"/>
+
+                        <Button Name="Replace" 
+                                Command="{Binding Replace_click_Command}"
+                                Content="↑↓"
+                                IsEnabled="{Binding Replace_IsEnabled}" 
+                                FontFamily="Arial Black"
+                                Margin="0,43">
+                            <Button.ToolTip>
+                                <ToolTip>
+                                    <TextBlock Text="Directory swap"/>
+                                </ToolTip>
+                            </Button.ToolTip>
+                        </Button>
+
+                        <Image Source="/SORTER_MVVM;component/Resources/Triangle.png" Width="20" Margin="0,15"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,10,10,10" Orientation="Vertical">
+                        <Border>
+                            <StackPanel Orientation="Horizontal">
+
+                                <ListBox x:Name="DirectoryList"
+                                         Background="#FF4E4EE5" 
+                                         Width="346" Height="50" 
+                                         Foreground="White"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                         ItemsSource="{Binding Directory_List}"
+                                         SelectedItem="{Binding Directory_List_Selected_Item}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock Text="{Binding}" ToolTip="{Binding}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                
+                                <Border>
+                                    <StackPanel Orientation="Vertical" x:Name="Plus_Minus_Panel">
+                                        <Button x:Name="Creator"
+                                                Command="{Binding Browse_click_Command}"
+                                                IsEnabled="{Binding Creator_Browse_OutPut_IsEnabled}" 
+                                                Content="+" 
+                                                FontFamily="Arial Black">
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock Text="To add an input directory"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button x:Name="Deletor"
+                                                IsEnabled="{Binding Deletor_IsEnabled}"
+                                                Command="{Binding Deletor_click_Command}"
+                                                Content="-" 
+                                                VerticalAlignment="Bottom" 
+                                                FontFamily="Arial Black" 
+                                                Margin="0,14,0,0">
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock Text="To delete the selected directory"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+
+                        <Button x:Name="Clean"
+                                Command="{Binding Cleaner_click_Command}"
+                                IsEnabled="{Binding Cleaner_IsEnabled}"
+                                Width="25" 
+                                HorizontalAlignment="Right" 
+                                Margin="0,0,13,0" 
+                                BorderBrush="Transparent"
+                                Background="Transparent">
+                            <Button.ToolTip>
+                                <ToolTip>
+                                    <TextBlock Text="Clear of list of an input directory"/>
+                                </ToolTip>
+                            </Button.ToolTip>
+                            <Image>
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Source" Value="/SORTER_MVVM;component/Resources/icons_Clean.png"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=Clean, Path=IsEnabled}" Value="False">
+                                                <Setter Property="Source" Value="/SORTER_MVVM;component/Resources/icons_Clean_Disable.png"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </Button>
+
+                        <ComboBox x:Name="TypeList"
+                                  IsEditable="True" 
+                                  Margin="20,25,20,47"
+                                  Text="{Binding Type_Value, Mode=OneWayToSource}">
+                            <ComboBox.ToolTip>
+                                <ToolTip>
+                                    <TextBlock Text="Sorting condition selection"/>
+                                </ToolTip>
+                            </ComboBox.ToolTip>
+                            <TextBlock>.JPG</TextBlock>
+                            <TextBlock>.pdf</TextBlock>
+                            <TextBlock>.docx</TextBlock>
+                            <TextBlock>.txt</TextBlock>
+                            <TextBlock>.png</TextBlock>
+                            <TextBlock>.exe</TextBlock>
+                            <TextBlock>.xlsm</TextBlock>
+                            <TextBlock>.mp3</TextBlock>
+                            <TextBlock>.mp4</TextBlock>
+                            <TextBlock>.rar</TextBlock>
+                            <TextBlock>.zip</TextBlock>
+                        </ComboBox>
+
+                        <Border BorderThickness="1" BorderBrush="#FFABADB3" Margin="0,0,12,0">
+                            <TextBlock x:Name="TEXT_2" Background="#FF4E4EE5" Foreground="White" Height="39" Text="{Binding InPut_Directory}" ToolTip="{Binding InPut_Directory}"/>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Grid x:Name="Sort_Buttons">
+                <Button x:Name="SORTED"
+                        Command="{Binding Sort_click_Command}"
+                        IsEnabled="{Binding Sort_IsEnabled}" 
+                        HorizontalAlignment="Right" VerticalAlignment="Top"
+                        Content="SORT" 
+                        Margin="0,102,120,0" Style="{StaticResource Button_Style}" FontSize="25">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <TextBlock Text="Single sortation"/>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+
+                <ToggleButton x:Name="Constantly_sort"
+                                IsEnabled="{Binding Non_Stop_IsEnabled}" 
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top" 
+                                Margin="0,200,92,0" 
+                                FontSize="18"
+                                Command="{Binding Non_Stop_Sort_click_Command}"
+                                IsChecked="{Binding Non_Stop_IsChecked}">
+                    <!--Checked="Constantly_sort_Checked"
+                                Unchecked="Constantly_sort_Unchecked"-->
+                    <ToggleButton.Content>
+                        <TextBlock TextAlignment="Center">
+                            <Run Text="NON-STOP"/><LineBreak/><Run x:Name="Ground_Text" Text="SORT"/>
+                        </TextBlock>
+                    </ToggleButton.Content>
+
+                    <ToggleButton.ToolTip>
+                        <ToolTip>
+                            <TextBlock Text="Constant sortation by selected conditions"/>
+                        </ToolTip>
+                    </ToggleButton.ToolTip>
+
+                    <ToggleButton.Style>
+                        <Style TargetType="ToggleButton">
+                            <Setter Property="OverridesDefaultStyle" Value="True"/>
+                            <Setter Property="Background" Value="Black"/>
+                            <Setter Property="FontFamily" Value="Arial Black"/>
+                            <Setter Property="Foreground">
+                                <Setter.Value>
+                                    <LinearGradientBrush  EndPoint="1,0.5" StartPoint="0,0.5">
+                                        <GradientStop Color="White" Offset="0"/>
+                                        <GradientStop Color="White" Offset="0.5"/>
+                                        <GradientStop Color="White" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Template">
+
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border BorderThickness="1" BorderBrush="Black"
+                                                Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" 
+                                                              VerticalAlignment="Center" 
+                                                              Margin="3,0"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Foreground" Value="Red"/>
+                                            </Trigger>
+
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsChecked" Value="False"/>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <MultiTrigger.Setters>
+                                                    <Setter Property="Foreground" Value="Aqua"/>
+                                                </MultiTrigger.Setters>
+                                            </MultiTrigger>
+
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter Property="Foreground">
+                                                    <Setter.Value>
+                                                        <LinearGradientBrush  EndPoint="1,0.5" StartPoint="0,0.5">
+                                                            <GradientStop Color="White" Offset="0"/>
+                                                            <GradientStop Color="Green" Offset="0.5"/>
+                                                            <GradientStop Color="White" Offset="1"/>
+                                                        </LinearGradientBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Trigger.EnterActions>
+                                                    <BeginStoryboard x:Name="Non_Foreground_Story">
+                                                        <Storyboard>
+                                                            <DoubleAnimation 
+                                                                            Storyboard.TargetProperty="Foreground.GradientStops[1].Offset"
+                                                                            From="0" To="1"
+                                                                            Duration="0:0:2"
+                                                                            AutoReverse="True"
+                                                                            RepeatBehavior="Forever"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </Trigger.EnterActions>
+                                            </Trigger>
+
+                                            <Trigger Property="IsChecked" Value="False">
+                                                <Trigger.EnterActions>
+                                                    <StopStoryboard BeginStoryboardName="Non_Foreground_Story"/>
+                                                </Trigger.EnterActions>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
+
+            </Grid>
+        </Grid>
+
+        <Grid x:Name="LowBar" Grid.Row="2">
+
+            <Button x:Name="ProfilEditor"
+                    Foreground="White">
+                <!--Content="P r o f i l e s"-->
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Polygon Points="230,420 270,390 530,390 570 420" Stroke="Black"
+                                     Margin="0,0,0,0" 
+                                     HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                     ClipToBounds="True" Style="{StaticResource Polygone_Style}">
+                            </Polygon>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Top" 
+                                              Margin="0,5,0,7" 
+                                              TextElement.FontFamily="Arial Black" 
+                                              TextElement.FontSize="20"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <!--<Button x:Name="Button_Suport" 
+                    Click="Button_Suport_Click"
+                    Style="{StaticResource Polygone_Style}" 
+                    Foreground="White">
+                    
+            Content="H  o  w   i  t   w  o  r  k  s  ?"
+            
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Polygon Points="150,450 190,420 610,420 650,450" 
+                                     Stroke="Black" 
+                                     HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                <Polygon.Fill>
+                                    <SolidColorBrush Color="#FF0D3ECC" />
+                                </Polygon.Fill>
+                            </Polygon>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Bottom" 
+                                              TextElement.FontFamily="Arial Black" 
+                                              TextElement.FontSize="20" 
+                                              Margin="0,0,0,5"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+
+            </Button>-->
+        </Grid>
+    </Grid>
+</Window>
